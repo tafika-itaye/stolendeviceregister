@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign In — DeviceWatch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0a0c10;--surface:#111318;--border:#1e2230;--accent:#00e5ff;--accent2:#ff3b5c;--text:#e8eaf0;--muted:#6b7280;--card:#13161e}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,12,16,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:60px}
+    .logo{font-family:'Space Mono',monospace;font-size:1.1rem;color:var(--accent);display:flex;align-items:center;gap:8px;text-decoration:none}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+    main{flex:1;display:flex;align-items:center;justify-content:center;padding:3rem 1rem;position:relative;z-index:1}
+    .auth-card{background:var(--card);border:1px solid var(--border);border-radius:10px;width:100%;max-width:420px;padding:2.5rem}
+    .auth-tag{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+    .auth-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.4rem}
+    .auth-sub{color:var(--muted);font-size:.875rem;margin-bottom:2rem;line-height:1.6}
+    .form-group{margin-bottom:1.2rem}
+    label{display:block;font-size:.8rem;font-weight:500;margin-bottom:.4rem;color:var(--muted);letter-spacing:.03em}
+    input{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:.8rem 1rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
+    input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,229,255,.08)}
+    input::placeholder{color:var(--muted)}
+    .submit-btn{width:100%;background:var(--accent);color:#000;border:none;padding:1rem;border-radius:6px;font-family:'Space Mono',monospace;font-weight:700;font-size:.9rem;letter-spacing:.05em;cursor:pointer;transition:opacity .2s}
+    .submit-btn:hover{opacity:.85}
+    .forgot{display:block;text-align:right;font-size:.8rem;color:var(--muted);text-decoration:none;margin-top:-.6rem;margin-bottom:1.2rem;transition:color .2s}
+    .forgot:hover{color:var(--accent)}
+    .divider{text-align:center;color:var(--muted);font-size:.8rem;margin:1.2rem 0;position:relative}
+    .divider::before,.divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border)}
+    .divider::before{left:0}.divider::after{right:0}
+    .auth-alt{text-align:center;font-size:.85rem;color:var(--muted)}
+    .auth-alt a{color:var(--accent);text-decoration:none}
+    .toast{position:fixed;bottom:2rem;right:2rem;background:var(--surface);border:1px solid rgba(255,59,92,.3);border-radius:8px;padding:1rem 1.5rem;font-family:'Space Mono',monospace;font-size:.8rem;color:#ff3b5c;z-index:999;display:none}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
+</nav>
+<main>
+  <div class="auth-card">
+    <div class="auth-tag">// Sign In</div>
+    <h1 class="auth-title">Welcome back.</h1>
+    <p class="auth-sub">Sign in to manage your registered devices and reports.</p>
+
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="you@email.com" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="pass" placeholder="Your password" />
+    </div>
+    <a href="#" class="forgot">Forgot password?</a>
+    <button class="submit-btn" onclick="doLogin()">SIGN IN →</button>
+    <div class="divider">or</div>
+    <div class="auth-alt">No account? <a href="signup.html">Register free →</a></div>
+  </div>
+</main>
+<div class="toast" id="toast">Invalid email or password</div>
+<script>
+  function doLogin() {
+    const e=document.getElementById('email').value;
+    const p=document.getElementById('pass').value;
+    if(!e||!p){document.getElementById('toast').style.display='block';setTimeout(()=>document.getElementById('toast').style.display='none',2500);return;}
+    // Demo: any credentials go to dashboard
+    window.location.href='dashboard.html';
+  }
+  document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+</script>
+</body>
+</html>
