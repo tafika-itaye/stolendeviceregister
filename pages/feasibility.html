@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feasibility Study — DeviceWatch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0a0c10;--surface:#111318;--border:#1e2230;--accent:#00e5ff;--accent2:#ff3b5c;--accent3:#a8ff78;--text:#e8eaf0;--muted:#6b7280;--card:#13161e}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.7}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,12,16,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:60px}
+    .logo{font-family:'Space Mono',monospace;font-size:1.1rem;color:var(--accent);display:flex;align-items:center;gap:8px;text-decoration:none}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+    .wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:3rem 1.5rem}
+    .doc-tag{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.8rem}
+    h1{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.5rem;line-height:1.1}
+    .doc-meta{color:var(--muted);font-size:.85rem;margin-bottom:3rem;font-family:'Space Mono',monospace}
+    h2{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin:3rem 0 1rem;padding-top:1rem;border-top:1px solid var(--border);letter-spacing:-.02em}
+    h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin:1.5rem 0 .6rem;color:var(--accent)}
+    p{color:var(--muted);margin-bottom:1rem;font-size:.95rem}
+    strong{color:var(--text)}
+    .pill{display:inline-block;font-family:'Space Mono',monospace;font-size:.68rem;padding:.2rem .6rem;border-radius:4px;margin:.1rem;letter-spacing:.04em}
+    .pill.g{background:rgba(168,255,120,.1);color:var(--accent3);border:1px solid rgba(168,255,120,.2)}
+    .pill.b{background:rgba(0,229,255,.08);color:var(--accent);border:1px solid rgba(0,229,255,.15)}
+    .pill.r{background:rgba(255,59,92,.1);color:var(--accent2);border:1px solid rgba(255,59,92,.2)}
+    .pill.y{background:rgba(255,200,60,.1);color:#ffc83c;border:1px solid rgba(255,200,60,.2)}
+
+    table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.875rem}
+    th{background:var(--surface);padding:.7rem 1rem;text-align:left;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.05em;color:var(--muted);border-bottom:1px solid var(--border)}
+    td{padding:.8rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}
+    tr:hover td{background:rgba(255,255,255,.015)}
+    td.num{font-family:'Space Mono',monospace;color:var(--accent);font-weight:700}
+    td.total{font-family:'Space Mono',monospace;color:var(--accent3);font-weight:700;font-size:1rem}
+    .cost-highlight{background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.15);border-radius:8px;padding:1.4rem 1.8rem;margin:1.5rem 0}
+    .cost-big{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;color:var(--accent3);margin-bottom:.3rem}
+    .cost-label{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+    .warn{background:rgba(255,200,60,.06);border-left:3px solid #ffc83c;padding:.8rem 1rem;border-radius:0 6px 6px 0;margin:1rem 0;font-size:.875rem;color:var(--muted)}
+    .info{background:rgba(0,229,255,.05);border-left:3px solid var(--accent);padding:.8rem 1rem;border-radius:0 6px 6px 0;margin:1rem 0;font-size:.875rem;color:var(--muted)}
+    .stack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.2rem 0}
+    .stack-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.2rem}
+    .stack-card h4{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+    .stack-card ul{list-style:none;font-size:.85rem}
+    .stack-card li{color:var(--muted);padding:.15rem 0}
+    .stack-card li::before{content:'→ ';color:var(--border)}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
+</nav>
+
+<div class="wrap">
+  <div class="doc-tag">// Feasibility Study & Cost Analysis</div>
+  <h1>DeviceWatch<br/>Registry Platform</h1>
+  <p class="doc-meta">Document v1.0 · Prepared for Developer Use · 2025</p>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <h2>1. Executive Summary</h2>
+  <p>DeviceWatch is a <strong>national stolen device registry</strong> — a public-facing web platform and mobile application allowing citizens to register stolen IT devices (phones, laptops, tablets) by IMEI or serial number, verified against national identity and police records. Buyers can instantly check any second-hand device before purchase.</p>
+  <p>The concept is technically <strong>highly feasible</strong> with your stated skill set (C#, HTML, JavaScript, SQL). The core technology is a verified database with a public search API — similar in scope to haveibeenpwned.com but with identity verification.</p>
+
+  <div class="info"><strong>Market gap:</strong> No single authoritative stolen device registry exists publicly in most African markets. This creates immediate value for second-hand markets, law enforcement, and insurers.</div>
+
+  <!-- TECHNICAL FEASIBILITY -->
+  <h2>2. Technical Feasibility</h2>
+
+  <h3>2.1 Core System Requirements</h3>
+  <p>The system has three distinct layers:</p>
+
+  <div class="stack-grid">
+    <div class="stack-card">
+      <h4>Frontend (Client)</h4>
+      <ul>
+        <li>HTML5 / CSS3 / Vanilla JS</li>
+        <li>Progressive Web App (PWA)</li>
+        <li>Mobile-responsive design</li>
+        <li>Offline IMEI cache</li>
+      </ul>
+    </div>
+    <div class="stack-card">
+      <h4>Backend API</h4>
+      <ul>
+        <li>ASP.NET Core (C# ✓)</li>
+        <li>REST API with JWT auth</li>
+        <li>Background jobs (Hangfire)</li>
+        <li>Image upload (Azure Blob)</li>
+      </ul>
+    </div>
+    <div class="stack-card">
+      <h4>Database</h4>
+      <ul>
+        <li>SQL Server / Azure SQL (✓)</li>
+        <li>Indexed IMEI/Serial columns</li>
+        <li>Audit log table</li>
+        <li>Encrypted PII columns</li>
+      </ul>
+    </div>
+    <div class="stack-card">
+      <h4>Integrations</h4>
+      <ul>
+        <li>National ID verify API</li>
+        <li>SMS OTP (Africa's Talking)</li>
+        <li>File/image CDN</li>
+        <li>Email (SendGrid)</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>2.2 Full Technical Stack Recommendation</h3>
+  <table>
+    <tr><th>Layer</th><th>Technology</th><th>Reason</th></tr>
+    <tr><td>Frontend Web</td><td>HTML5 + CSS3 + Vanilla JS (or Blazor)</td><td>You already know this; Blazor lets you reuse C# on frontend</td></tr>
+    <tr><td>Backend API</td><td><strong>ASP.NET Core 8 (C#)</strong></td><td>Your primary language, excellent performance, great ecosystem</td></tr>
+    <tr><td>Database</td><td><strong>SQL Server / Azure SQL</strong></td><td>Your strength; handles 10M+ records with proper indexing</td></tr>
+    <tr><td>Auth</td><td>ASP.NET Identity + JWT</td><td>Built into .NET, industry standard</td></tr>
+    <tr><td>File Storage</td><td>Azure Blob Storage</td><td>Cheap, scalable, integrates natively with .NET</td></tr>
+    <tr><td>Hosting</td><td>Azure App Service (or VPS)</td><td>Scale up as traffic grows; ~$13–50/month to start</td></tr>
+    <tr><td>SMS / OTP</td><td>Africa's Talking API</td><td>Kenyan-focused, cheap, well-documented</td></tr>
+    <tr><td>Email</td><td>SendGrid (free tier 100/day)</td><td>Free to start, scales up</td></tr>
+    <tr><td>Search CDN</td><td>Cloudflare free tier</td><td>Caches public IMEI lookups, reduces server load dramatically</td></tr>
+    <tr><td>CI/CD</td><td>GitHub Actions → Azure</td><td>Free for public repos; auto-deploy on push</td></tr>
+    <tr><td>Mobile App</td><td>PWA first, then .NET MAUI</td><td>PWA works on iOS and Android immediately; MAUI for native app store</td></tr>
+  </table>
+
+  <!-- DATABASE SCHEMA -->
+  <h2>3. Core Database Schema (SQL)</h2>
+  <p>Key tables required (simplified):</p>
+  <pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.5rem;overflow-x:auto;font-family:'Space Mono',monospace;font-size:.75rem;color:var(--accent);line-height:1.6">
+-- Users table (PII encrypted at rest)
+Users (Id, Email, PasswordHash, NationalId_Encrypted,
+       PhoneNumber, FullName, IsVerified, CreatedAt)
+
+-- Devices registry (core table - heavily indexed)
+StolenDevices (Id, UserId FK, DeviceType, MakeModel,
+               IMEI [INDEXED], SerialNumber [INDEXED],
+               PoliceReportNumber, TheftDate,
+               IdentifyingMarks, PhotoUrl,
+               Status [Active/Resolved/Disputed],
+               RegisteredAt, LastUpdated)
+
+-- Search audit log (for analytics + abuse detection)
+SearchLog (Id, SearchTerm, SearchType [IMEI/Serial],
+           IPAddress, HitFound, Timestamp)
+
+-- Verification log
+VerificationLog (Id, UserId, NIDVerified, ReportVerified,
+                 VerifiedAt, APIResponse)
+  </pre>
+
+  <!-- EXTERNAL API INTEGRATIONS -->
+  <h2>4. External API Integrations</h2>
+
+  <h3>4.1 National ID Verification</h3>
+  <div class="warn"><strong>Note:</strong> Kenya's IPRS (Integrated Population Registration System) API requires formal application and MOU with the government. For South Africa use Home Affairs API. In the demo/MVP phase, implement syntax validation + manual verification workflow as a fallback.</div>
+  <p>Estimated integration cost: <strong>KES 0 (government partnership)</strong> — apply through relevant ICT Authority or request API access from the national registry body. Budget 3–6 months for approval.</p>
+
+  <h3>4.2 Police Report Validation</h3>
+  <p>Currently no public API exists. <strong>Recommended approach:</strong></p>
+  <p>Phase 1: Validate by syntax/format only (regex: region/station/year/number). Phase 2: Partner with police service for API access or manual verification by a police liaison. Phase 3: Full API integration.</p>
+
+  <h3>4.3 SMS OTP — Africa's Talking</h3>
+  <p>Cost: ~KES 0.8/SMS. For 1,000 registrations/month = ~KES 800/month. API is well-documented for .NET.</p>
+
+  <!-- DEPLOYMENT REQUIREMENTS -->
+  <h2>5. Deployment + Infrastructure Costs</h2>
+
+  <h3>5.1 Monthly Running Costs (MVP Phase — 0–5,000 users)</h3>
+  <table>
+    <tr><th>Service</th><th>Provider</th><th>Est. Monthly (USD)</th></tr>
+    <tr><td>App Hosting</td><td>Azure App Service B1</td><td class="num">$13</td></tr>
+    <tr><td>Database</td><td>Azure SQL Basic (2GB)</td><td class="num">$5</td></tr>
+    <tr><td>File Storage</td><td>Azure Blob (10GB)</td><td class="num">$2</td></tr>
+    <tr><td>CDN / DDoS</td><td>Cloudflare Free</td><td class="num">$0</td></tr>
+    <tr><td>Email</td><td>SendGrid Free (100/day)</td><td class="num">$0</td></tr>
+    <tr><td>SMS OTP</td><td>Africa's Talking</td><td class="num">$5–15</td></tr>
+    <tr><td>Domain (.co.ke)</td><td>Registrar</td><td class="num">$3</td></tr>
+    <tr><td>SSL Certificate</td><td>Let's Encrypt</td><td class="num">$0</td></tr>
+    <tr><td colspan="2"><strong>Total MVP Monthly</strong></td><td class="total">~$28–38/month</td></tr>
+  </table>
+
+  <h3>5.2 Monthly Running Costs (Growth Phase — 50,000+ users)</h3>
+  <table>
+    <tr><th>Service</th><th>Provider</th><th>Est. Monthly (USD)</th></tr>
+    <tr><td>App Hosting</td><td>Azure App Service P1v3</td><td class="num">$75</td></tr>
+    <tr><td>Database</td><td>Azure SQL Standard S2</td><td class="num">$75</td></tr>
+    <tr><td>Blob Storage</td><td>Azure (100GB+)</td><td class="num">$20</td></tr>
+    <tr><td>CDN</td><td>Cloudflare Pro</td><td class="num">$20</td></tr>
+    <tr><td>Email</td><td>SendGrid Essentials</td><td class="num">$20</td></tr>
+    <tr><td>SMS</td><td>Africa's Talking</td><td class="num">$50–100</td></tr>
+    <tr><td colspan="2"><strong>Total Growth Monthly</strong></td><td class="total">~$260–310/month</td></tr>
+  </table>
+
+  <!-- DEVELOPER COST -->
+  <h2>6. What to Charge as a Developer</h2>
+
+  <h3>6.1 Solo Developer Build Cost (You Building It)</h3>
+  <table>
+    <tr><th>Phase</th><th>Work Item</th><th>Est. Hours</th><th>Rate (KES/hr)</th><th>Cost (KES)</th></tr>
+    <tr><td>Phase 1</td><td>Requirements, DB design, wireframes</td><td>20h</td><td>3,500</td><td class="num">70,000</td></tr>
+    <tr><td>Phase 1</td><td>Backend API (ASP.NET Core)</td><td>80h</td><td>3,500</td><td class="num">280,000</td></tr>
+    <tr><td>Phase 1</td><td>Frontend (HTML/CSS/JS)</td><td>40h</td><td>3,500</td><td class="num">140,000</td></tr>
+    <tr><td>Phase 1</td><td>Database + stored procedures</td><td>20h</td><td>3,500</td><td class="num">70,000</td></tr>
+    <tr><td>Phase 1</td><td>Auth, NID & report validation</td><td>30h</td><td>3,500</td><td class="num">105,000</td></tr>
+    <tr><td>Phase 1</td><td>Testing, QA, deployment</td><td>30h</td><td>3,500</td><td class="num">105,000</td></tr>
+    <tr><td>Phase 2</td><td>PWA / mobile optimization</td><td>30h</td><td>3,500</td><td class="num">105,000</td></tr>
+    <tr><td>Phase 2</td><td>Admin dashboard + reporting</td><td>25h</td><td>3,500</td><td class="num">87,500</td></tr>
+    <tr><td colspan="3"><strong>Total Build (MVP + Phase 2)</strong></td><td></td><td class="total">~KES 962,500</td></tr>
+  </table>
+
+  <div class="cost-highlight">
+    <div class="cost-big">KES 750,000 – 1,200,000</div>
+    <div class="cost-label">Recommended Quote Range for Full MVP (depending on scope & client)</div>
+  </div>
+
+  <h3>6.2 Pricing Tiers to Offer Clients</h3>
+  <table>
+    <tr><th>Package</th><th>What's Included</th><th>Quote (KES)</th></tr>
+    <tr><td><strong>Basic Demo</strong></td><td>Static HTML demo site, no backend, GitHub Pages deploy</td><td class="num">50,000–80,000</td></tr>
+    <tr><td><strong>MVP Live</strong></td><td>Full working site with C# backend, SQL DB, NID validation, deployed on Azure</td><td class="num">600,000–900,000</td></tr>
+    <tr><td><strong>Full Platform</strong></td><td>MVP + mobile PWA, admin panel, law enforcement portal, API for third parties</td><td class="num">1,200,000–2,000,000</td></tr>
+    <tr><td><strong>Monthly Retainer</strong></td><td>Maintenance, updates, support, hosting management</td><td class="num">30,000–60,000/mo</td></tr>
+  </table>
+
+  <div class="info"><strong>Tip:</strong> Pitch the law enforcement partnership angle — if NTSA, DCI, or an insurer co-funds the build, they become your anchor client and the build cost is justified at the higher end.</div>
+
+  <!-- REVENUE MODEL -->
+  <h2>7. Revenue Model (How the Platform Makes Money)</h2>
+  <table>
+    <tr><th>Revenue Stream</th><th>Description</th><th>Est. Monthly (Mature)</th></tr>
+    <tr><td>API Access — Insurers</td><td>Insurance companies pay per lookup for claims verification</td><td class="num">KES 50,000–200,000</td></tr>
+    <tr><td>API Access — Dealers</td><td>Second-hand device dealers pay monthly API subscription</td><td class="num">KES 20,000–80,000</td></tr>
+    <tr><td>Law Enforcement Partnership</td><td>Government/police co-fund or contract for access</td><td class="num">KES 100,000+</td></tr>
+    <tr><td>Premium User Accounts</td><td>Business accounts with bulk device registration & alerts</td><td class="num">KES 15,000–40,000</td></tr>
+    <tr><td>Ads (marketplace)</td><td>Verified second-hand device listings</td><td class="num">KES 10,000–30,000</td></tr>
+  </table>
+
+  <!-- RISK ASSESSMENT -->
+  <h2>8. Risk Assessment</h2>
+  <table>
+    <tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr>
+    <tr><td>NID API access denied/delayed</td><td><span class="pill r">HIGH</span></td><td>Build with manual verification fallback; reusable when API approved</td></tr>
+    <tr><td>False reports / abuse</td><td><span class="pill y">MEDIUM</span></td><td>Require verified police report; dispute mechanism; T&C with legal liability clause</td></tr>
+    <tr><td>Low adoption</td><td><span class="pill y">MEDIUM</span></td><td>Partner with at least one telco or insurer before launch; they bring user base</td></tr>
+    <tr><td>Data breach / PII exposure</td><td><span class="pill y">MEDIUM</span></td><td>Encrypt NID at rest; never expose PII in search results; penetration test before go-live</td></tr>
+    <tr><td>Competition from MNOs</td><td><span class="pill g">LOW</span></td><td>MNOs won't build cross-network; your cross-carrier IMEI registry is the differentiator</td></tr>
+  </table>
+
+  <!-- TIMELINE -->
+  <h2>9. Recommended Build Timeline</h2>
+  <table>
+    <tr><th>Phase</th><th>Duration</th><th>Deliverable</th></tr>
+    <tr><td>Phase 0 — Demo</td><td>1 week</td><td>Static HTML5 site (this file), GitHub Pages, no backend</td></tr>
+    <tr><td>Phase 1 — MVP</td><td>8–12 weeks</td><td>ASP.NET API + SQL DB + working search + registration form</td></tr>
+    <tr><td>Phase 2 — Verification</td><td>4–6 weeks</td><td>NID & police report API integration, SMS OTP, admin panel</td></tr>
+    <tr><td>Phase 3 — Mobile</td><td>4 weeks</td><td>PWA wrapping + optional .NET MAUI app for app stores</td></tr>
+    <tr><td>Phase 4 — Scale</td><td>Ongoing</td><td>Law enforcement portal, insurer API, analytics dashboard</td></tr>
+  </table>
+
+  <h2>10. GitHub Pages Deployment (Demo)</h2>
+  <p>The HTML5 demo files in this package can be deployed to GitHub Pages immediately:</p>
+  <pre style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.5rem;overflow-x:auto;font-family:'Space Mono',monospace;font-size:.75rem;color:var(--accent3);line-height:1.8">
+# 1. Create GitHub repository
+git init
+git add .
+git commit -m "Initial DeviceWatch demo"
+git remote add origin https://github.com/YOUR_USERNAME/devicewatch.git
+git push -u origin main
+
+# 2. Enable GitHub Pages
+# → Settings → Pages → Source: main branch → /root
+# → Your demo will be live at:
+#   https://YOUR_USERNAME.github.io/devicewatch/
+
+# 3. For production (ASP.NET Core backend):
+# → Deploy to Azure App Service from GitHub Actions
+# → Connection string in Azure App Configuration
+# → CI/CD pipeline auto-deploys on push to main
+  </pre>
+
+  <div style="border-top:1px solid var(--border);margin-top:3rem;padding-top:1.5rem">
+    <p style="font-family:'Space Mono',monospace;font-size:.75rem;color:var(--muted)">DeviceWatch Feasibility Study · Demo Document · All figures are estimates · Verify API availability and regulatory requirements before production deployment</p>
+  </div>
+</div>
+</body>
+</html>

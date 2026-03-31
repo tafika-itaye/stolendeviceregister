@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register Stolen Device — DeviceWatch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0a0c10;--surface:#111318;--border:#1e2230;--accent:#00e5ff;--accent2:#ff3b5c;--accent3:#a8ff78;--text:#e8eaf0;--muted:#6b7280;--card:#13161e}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;background:rgba(10,12,16,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:60px}
+    .logo{font-family:'Space Mono',monospace;font-size:1.1rem;color:var(--accent);display:flex;align-items:center;gap:8px;text-decoration:none}
+    .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+    .nav-right{display:flex;gap:1rem;align-items:center}
+    .nav-right a{color:var(--muted);font-size:.875rem;text-decoration:none}
+    .nav-right a:hover{color:var(--text)}
+    .btn-nav{background:var(--accent);color:#000;padding:.45rem 1.1rem;border-radius:4px;font-weight:700;font-size:.8rem;font-family:'Space Mono',monospace;text-decoration:none}
+
+    .page-wrap{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:3rem 1.5rem}
+    .page-tag{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--accent2);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem}
+    .page-title{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.5rem}
+    .page-sub{color:var(--muted);font-size:.95rem;margin-bottom:2.5rem;line-height:1.7}
+
+    .progress-bar{display:flex;gap:.4rem;margin-bottom:2.5rem}
+    .pb{flex:1;height:4px;border-radius:4px;background:var(--border);transition:background .3s}
+    .pb.active{background:var(--accent2)}
+    .pb.done{background:var(--accent3)}
+
+    .form-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:2rem}
+    .step-label{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.5rem}
+    .form-group{margin-bottom:1.3rem}
+    label{display:block;font-size:.8rem;font-weight:500;margin-bottom:.4rem;color:var(--muted);letter-spacing:.02em}
+    input,select,textarea{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:6px;padding:.8rem 1rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
+    input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,229,255,.08)}
+    input::placeholder,textarea::placeholder{color:var(--muted)}
+    textarea{resize:vertical;min-height:80px}
+    select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center}
+    .input-hint{font-size:.72rem;color:var(--muted);margin-top:.3rem}
+
+    .verify-row{display:flex;gap:.5rem}
+    .verify-row input{flex:1}
+    .btn-verify{background:var(--surface);border:1.5px solid var(--border);color:var(--accent);padding:.8rem 1rem;border-radius:6px;font-family:'Space Mono',monospace;font-size:.72rem;cursor:pointer;white-space:nowrap;transition:border-color .2s;min-width:110px}
+    .btn-verify:hover{border-color:var(--accent)}
+    .btn-verify.ok{border-color:rgba(168,255,120,.4);color:var(--accent3)}
+
+    .upload-zone{border:1.5px dashed var(--border);border-radius:8px;padding:2rem;text-align:center;cursor:pointer;transition:border-color .2s;position:relative;background:var(--surface)}
+    .upload-zone:hover{border-color:var(--accent)}
+    .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+    .upload-icon{font-size:2rem;margin-bottom:.5rem}
+    .upload-text{color:var(--muted);font-size:.85rem}
+    .preview-img{max-height:150px;border-radius:6px;margin-top:1rem;display:none}
+
+    .btn-row{display:flex;gap:.7rem;margin-top:1.5rem}
+    .btn-back{flex:1;background:transparent;border:1.5px solid var(--border);color:var(--text);padding:.9rem;border-radius:6px;font-family:'Space Mono',monospace;font-size:.8rem;cursor:pointer;transition:border-color .2s}
+    .btn-back:hover{border-color:var(--accent)}
+    .btn-next{flex:2;background:var(--accent2);color:#fff;border:none;padding:.9rem;border-radius:6px;font-family:'Space Mono',monospace;font-weight:700;font-size:.85rem;cursor:pointer;letter-spacing:.05em;transition:opacity .2s}
+    .btn-next:hover{opacity:.85}
+
+    .toast{position:fixed;bottom:2rem;right:2rem;background:var(--surface);border:1px solid rgba(255,59,92,.3);border-radius:8px;padding:1rem 1.5rem;font-family:'Space Mono',monospace;font-size:.8rem;color:var(--accent2);z-index:999;display:none;animation:fu .3s}
+    @keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .toast.ok{border-color:rgba(168,255,120,.4);color:var(--accent3)}
+
+    .success-wrap{text-align:center;padding:2rem}
+    .success-ref{font-family:'Space Mono',monospace;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);border-radius:6px;padding:.8rem 1.4rem;color:var(--accent);font-size:.9rem;display:inline-block;margin:1rem 0}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
+  <div class="nav-right">
+    <a href="../index.html">Search</a>
+    <a href="dashboard.html" class="btn-nav">My Devices</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+  <div class="page-tag">// Report Stolen Device</div>
+  <h1 class="page-title">Register Stolen Device</h1>
+  <p class="page-sub">Complete all 3 steps. Your personal information is never shown publicly — only the device status and report number appear in search results.</p>
+
+  <div class="progress-bar">
+    <div class="pb active" id="p1"></div>
+    <div class="pb" id="p2"></div>
+    <div class="pb" id="p3"></div>
+  </div>
+
+  <div class="form-card">
+
+    <!-- STEP 1: Identity -->
+    <div id="s1">
+      <div class="step-label">Step 1 of 3 — Identity Verification</div>
+      <div class="form-group">
+        <label>National ID Number</label>
+        <div class="verify-row">
+          <input type="text" id="nid" placeholder="Enter 7-8 digit ID" maxlength="8"/>
+          <button class="btn-verify" id="nidBtn" onclick="verifyNID()">VERIFY</button>
+        </div>
+        <div class="input-hint">We verify against the national registry API. This is required for accountability.</div>
+      </div>
+      <div class="form-group">
+        <label>Police Report Number</label>
+        <div class="verify-row">
+          <input type="text" id="policeRpt" placeholder="e.g. KE/NRB/2025/04521"/>
+          <button class="btn-verify" id="rptBtn" onclick="verifyReport()">VERIFY</button>
+        </div>
+        <div class="input-hint">Format: XX/XXX/YYYY/NNNNN — must be a valid filed report.</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="goS2()">NEXT: Device Details →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Device Info -->
+    <div id="s2" style="display:none">
+      <div class="step-label">Step 2 of 3 — Device Information</div>
+      <div class="form-group">
+        <label>Device Type</label>
+        <select id="devType">
+          <option value="">Select device type</option>
+          <option>Smartphone</option>
+          <option>Laptop</option>
+          <option>Tablet</option>
+          <option>Desktop / PC</option>
+          <option>Smartwatch</option>
+          <option>Camera</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Make & Model</label>
+        <input type="text" id="makeModel" placeholder="e.g. Samsung Galaxy A54 5G" />
+      </div>
+      <div class="form-group">
+        <label>IMEI Number <span style="color:var(--muted);font-size:.75rem">(for phones)</span></label>
+        <input type="text" id="imei" placeholder="15-digit IMEI" maxlength="15" />
+        <div class="input-hint">Dial *#06# to find your IMEI. Leave blank if not a phone.</div>
+      </div>
+      <div class="form-group">
+        <label>Serial Number</label>
+        <input type="text" id="serial" placeholder="Device serial number" />
+      </div>
+      <div class="form-group">
+        <label>Date of Theft</label>
+        <input type="date" id="theftDate" />
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goS1()">← Back</button>
+        <button class="btn-next" onclick="goS3()">NEXT: Evidence →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Photo & Marks -->
+    <div id="s3" style="display:none">
+      <div class="step-label">Step 3 of 3 — Evidence & Identifying Marks</div>
+      <div class="form-group">
+        <label>Identifying Marks / Description</label>
+        <textarea id="marks" placeholder="Describe any unique marks, scratches, stickers, custom engravings, case colour, etc."></textarea>
+        <div class="input-hint">Be specific — this helps identify your device if recovered.</div>
+      </div>
+      <div class="form-group">
+        <label>Device Photo</label>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" accept="image/*" id="photoInput" onchange="previewPhoto(this)"/>
+          <div class="upload-icon">📷</div>
+          <div class="upload-text">Tap to upload photo of device<br/><small>JPG, PNG up to 5MB</small></div>
+          <img class="preview-img" id="previewImg"/>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goS2()">← Back</button>
+        <button class="btn-next" style="background:#ff3b5c" onclick="submitReport()">🚨 REGISTER DEVICE</button>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div id="success" style="display:none">
+      <div class="success-wrap">
+        <div style="font-size:3rem;margin-bottom:1rem">🛡️</div>
+        <h2 style="font-family:'Syne',sans-serif;font-size:1.6rem;margin-bottom:.5rem">Device Registered!</h2>
+        <p style="color:var(--muted);margin-bottom:1rem">Your stolen device has been added to the national registry. Anyone checking this IMEI or serial number will see it is flagged.</p>
+        <div class="success-ref" id="refNo">REF: DW-2025-XXXX</div>
+        <br/>
+        <a href="../index.html" style="color:var(--accent);text-decoration:none;font-family:'Space Mono',monospace;font-size:.85rem">← Back to Search</a>
+        &nbsp;&nbsp;
+        <a href="dashboard.html" style="color:var(--muted);text-decoration:none;font-family:'Space Mono',monospace;font-size:.85rem">My Devices →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let nidOk=false, rptOk=false;
+  function toast(msg,ok=false){
+    const t=document.getElementById('toast');
+    t.textContent=msg; t.className='toast'+(ok?' ok':'');
+    t.style.display='block';
+    setTimeout(()=>t.style.display='none',3000);
+  }
+  function verifyNID(){
+    const v=document.getElementById('nid').value;
+    if(v.length<7){toast('Enter a valid 7-8 digit National ID');return;}
+    const btn=document.getElementById('nidBtn');
+    btn.textContent='CHECKING...';
+    setTimeout(()=>{
+      nidOk=true; btn.textContent='✓ VERIFIED'; btn.classList.add('ok');
+      toast('National ID verified ✓',true);
+    },1600);
+  }
+  function verifyReport(){
+    const v=document.getElementById('policeRpt').value.trim();
+    const re=/^[A-Z]{2}\/[A-Z]{3}\/\d{4}\/\d{4,5}$/;
+    if(!re.test(v.toUpperCase())){toast('Invalid report format. Expected: KE/NRB/2025/04521');return;}
+    const btn=document.getElementById('rptBtn');
+    btn.textContent='CHECKING...';
+    setTimeout(()=>{
+      rptOk=true; btn.textContent='✓ VALID'; btn.classList.add('ok');
+      toast('Police report number validated ✓',true);
+    },1200);
+  }
+  function step(from,to,pFrom,pTo){
+    document.getElementById(from).style.display='none';
+    document.getElementById(to).style.display='block';
+    document.getElementById(pFrom).classList.replace('active','done');
+    document.getElementById(pTo).classList.add('active');
+  }
+  function goS1(){
+    document.getElementById('s2').style.display='none';
+    document.getElementById('s1').style.display='block';
+    document.getElementById('p2').classList.remove('active','done');
+    document.getElementById('p1').className='pb done';
+  }
+  function goS2(){
+    if(!nidOk){toast('Please verify your National ID first');return;}
+    if(!rptOk){toast('Please verify your police report number');return;}
+    step('s1','s2','p1','p2');
+  }
+  function goS3(){
+    if(!document.getElementById('makeModel').value){toast('Enter device make & model');return;}
+    const imei=document.getElementById('imei').value;
+    const ser=document.getElementById('serial').value;
+    if(!imei&&!ser){toast('Enter at least IMEI or Serial Number');return;}
+    step('s2','s3','p2','p3');
+  }
+  function previewPhoto(inp){
+    if(!inp.files[0])return;
+    const r=new FileReader();
+    r.onload=e=>{
+      const img=document.getElementById('previewImg');
+      img.src=e.target.result; img.style.display='block';
+    };
+    r.readAsDataURL(inp.files[0]);
+  }
+  function submitReport(){
+    if(!document.getElementById('marks').value){toast('Please add identifying marks');return;}
+    const ref='DW-'+new Date().getFullYear()+'-'+Math.floor(1000+Math.random()*9000);
+    document.getElementById('refNo').textContent='REF: '+ref;
+    document.getElementById('s3').style.display='none';
+    document.getElementById('success').style.display='block';
+    document.getElementById('p3').classList.add('done');
+  }
+</script>
+</body>
+</html>
