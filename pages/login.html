@@ -1,45 +1,73 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Sign In — DeviceWatch</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css">
-</head><body>
-<nav>
-  <a href="../index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
-  <div class="nav-links"><a href="../index.html">Search</a><a href="../about.html">About</a><a href="login.html" class="active">Sign In</a><a href="signup.html" class="btn-nav">Register Free →</a></div>
-  <button class="hamburger" onclick="DW.toggleMenu()"><span></span><span></span><span></span></button>
-</nav>
-<div class="wrap">
-  <div class="form-card">
-    <h2>Welcome <span style="color:var(--accent)">back</span></h2>
-    <p class="lead">Sign in to manage your reported devices and check your dashboard.</p>
-    <form id="login-form">
-      <div class="form-group"><label>Email</label><input type="email" id="l-email" placeholder="you@example.com" required><div class="form-error" id="le-email"></div></div>
-      <div class="form-group"><label>Password</label><input type="password" id="l-pass" placeholder="Your password" required><div class="form-error" id="le-pass"></div></div>
-      <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-    </form>
-    <p class="form-link">Don't have an account? <a href="signup.html">Register free</a></p>
-  </div>
-</div>
-<footer><a href="../index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a><p>&copy; 2026 DeviceWatch — TechNexus Malawi</p></footer>
-<script src="../js/app.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => { if (DW.isLoggedIn()) window.location.href = '../dashboard.html'; });
-document.getElementById('login-form').addEventListener('submit', e => {
-  e.preventDefault();
-  document.querySelectorAll('.form-error').forEach(el => { el.classList.remove('show'); el.textContent = ''; });
-  const email = document.getElementById('l-email').value;
-  const pass = document.getElementById('l-pass').value;
-  const result = DW.login(email, pass);
-  if (!result.success) {
-    const target = result.error.includes('password') ? 'le-pass' : 'le-email';
-    document.getElementById(target).textContent = result.error;
-    document.getElementById(target).classList.add('show');
-    return;
-  }
-  DW.toast('Signed in. Redirecting...', 'success');
-  setTimeout(() => { window.location.href = '../dashboard.html'; }, 800);
-});
-</script>
-</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to DeviceWatch to manage your registered devices and stolen device reports.">
+  <meta name="page-depth" content="../">
+  <title>Sign In — DeviceWatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="auth-page">
+
+  <nav>
+    <a href="../index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
+    <div class="nav-links">
+      <a href="../index.html">Search</a>
+      <a href="../about.html">About</a>
+      <a href="signup.html" class="btn-nav">Register Free</a>
+    </div>
+    <button class="hamburger" onclick="DW.toggleMenu()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <main class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-tag">// Sign In</div>
+      <h1 class="auth-title">Welcome back.</h1>
+      <p class="auth-sub">Sign in to manage your registered devices and reports.</p>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="you@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="pass">Password</label>
+        <input type="password" id="pass" placeholder="Your password" autocomplete="current-password">
+      </div>
+      <a href="#" class="forgot">Forgot password?</a>
+      <button class="submit-btn" id="loginBtn">SIGN IN</button>
+
+      <div class="divider">or</div>
+      <div class="auth-alt">No account? <a href="signup.html">Register free</a></div>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    function doLogin() {
+      const e = document.getElementById('email').value.trim();
+      const p = document.getElementById('pass').value;
+      if (!e || !p) {
+        DW.toast('Please enter your email and password', 'error');
+        return;
+      }
+      if (!e.includes('@')) {
+        DW.toast('Please enter a valid email address', 'error');
+        return;
+      }
+      DW.login(e);
+      window.location.href = 'dashboard.html';
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', doLogin);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+  </script>
+</body>
+</html>

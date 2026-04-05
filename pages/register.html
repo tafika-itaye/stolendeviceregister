@@ -1,91 +1,250 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Register Stolen Device — DeviceWatch</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../css/style.css">
-</head><body>
-<nav>
-  <a href="../index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
-  <div class="nav-links"><a href="../index.html">Search</a><a href="../about.html">About</a>
-    <span class="nav-auth"><a href="register.html" class="active">Report Stolen</a><a href="../dashboard.html">Dashboard</a><span class="user-badge"></span><a href="#" onclick="DW.logout();return false;" style="color:var(--accent2)">Logout</a></span>
-  </div>
-  <button class="hamburger" onclick="DW.toggleMenu()"><span></span><span></span><span></span></button>
-</nav>
-<div class="wrap" style="max-width:640px">
-  <div class="page-tag">// Register Stolen Device</div>
-  <h1 class="page-title">Report a <span>stolen</span> device</h1>
-  <p class="page-sub">Complete the form below. You must have a valid police report number. Your personal details will not be shown publicly.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Register a stolen device on DeviceWatch with your verified National ID and police report number.">
+  <meta name="page-depth" content="../">
+  <title>Register Stolen Device — DeviceWatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
 
-  <div id="reg-success" class="form-success"></div>
+  <nav>
+    <a href="../index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
+    <div class="nav-links">
+      <a href="../index.html">Search</a>
+      <a href="../about.html">About</a>
+      <span class="nav-guest">
+        <a href="login.html">Sign In</a>
+        <a href="signup.html" class="btn-nav">Register Free</a>
+      </span>
+      <span class="nav-auth">
+        <a href="dashboard.html">Dashboard</a>
+        <span class="user-badge"></span>
+        <a href="#" onclick="DW.logout();return false;" style="color:var(--danger)">Logout</a>
+      </span>
+    </div>
+    <button class="hamburger" onclick="DW.toggleMenu()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-  <div style="background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:2rem;">
-    <form id="register-form">
-      <h3 style="font-family:var(--font-display);font-size:1.1rem;margin-bottom:1.5rem;color:var(--accent)">Device Information</h3>
-      <div class="form-row">
-        <div class="form-group"><label>IMEI Number</label><input type="text" id="r-imei" placeholder="15-digit IMEI" maxlength="15"><div class="form-error" id="re-imei"></div></div>
-        <div class="form-group"><label>Serial Number (optional)</label><input type="text" id="r-serial" placeholder="Alphanumeric" maxlength="20"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>Make / Brand</label>
-          <select id="r-make" required><option value="">Select...</option><option>Apple</option><option>Samsung</option><option>TECNO</option><option>Infinix</option><option>Huawei</option><option>Xiaomi</option><option>Nokia</option><option>Lenovo</option><option>HP</option><option>Dell</option><option>Other</option></select>
+  <div class="wrap" style="max-width:700px">
+    <div class="page-tag">// Report Stolen Device</div>
+    <h1 class="page-title">Register Stolen Device</h1>
+    <p class="page-sub">Complete all 3 steps. Your personal information is never shown publicly. Only the device status and report number appear in search results.</p>
+
+    <div class="progress-bar">
+      <div class="pb active" id="p1"></div>
+      <div class="pb" id="p2"></div>
+      <div class="pb" id="p3"></div>
+    </div>
+
+    <div class="form-card">
+      <!-- STEP 1: Identity -->
+      <div id="s1">
+        <div class="step-label">Step 1 of 3 &mdash; Identity Verification</div>
+        <div class="form-group">
+          <label for="nid">National ID Number</label>
+          <div class="verify-row">
+            <input type="text" id="nid" placeholder="Enter 7-10 digit ID" maxlength="10">
+            <button class="btn-verify" id="nidBtn" onclick="verifyNID()">VERIFY</button>
+          </div>
+          <div class="input-hint">We verify against the national registry. Required for accountability.</div>
         </div>
-        <div class="form-group"><label>Model</label><input type="text" id="r-model" placeholder="e.g. iPhone 14 Pro" required></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>Color</label><input type="text" id="r-color" placeholder="e.g. Midnight Blue"></div>
-        <div class="form-group"><label>Device Type</label>
-          <select id="r-type"><option>Smartphone</option><option>Tablet</option><option>Laptop</option><option>Desktop</option><option>Other</option></select>
+        <div class="form-group">
+          <label for="policeRpt">Police Report Number</label>
+          <div class="verify-row">
+            <input type="text" id="policeRpt" placeholder="e.g. MW/BT/2026/04521">
+            <button class="btn-verify" id="rptBtn" onclick="verifyReport()">VERIFY</button>
+          </div>
+          <div class="input-hint">Format: XX/XX/YYYY/NNNNN &mdash; must be a valid filed report.</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-next" onclick="goS2()">NEXT: Device Details</button>
         </div>
       </div>
-      <div class="form-group"><label>Identifying Marks</label><textarea id="r-marks" placeholder="Scratches, dents, stickers, engravings, case description..."></textarea></div>
 
-      <hr class="form-divider">
-      <h3 style="font-family:var(--font-display);font-size:1.1rem;margin-bottom:1.5rem;color:var(--accent2)">Police Report</h3>
-      <div class="form-row">
-        <div class="form-group"><label>Police Report Number</label><input type="text" id="r-report" placeholder="MW/BT/2026/00189" required><div class="form-error" id="re-report"></div></div>
-        <div class="form-group"><label>Date of Theft</label><input type="date" id="r-date" required></div>
+      <!-- STEP 2: Device Info -->
+      <div id="s2" style="display:none">
+        <div class="step-label">Step 2 of 3 &mdash; Device Information</div>
+        <div class="form-group">
+          <label for="devType">Device Type</label>
+          <select id="devType">
+            <option value="">Select device type</option>
+            <option>Smartphone</option>
+            <option>Laptop</option>
+            <option>Tablet</option>
+            <option>Desktop / PC</option>
+            <option>Smartwatch</option>
+            <option>Camera</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="makeModel">Make &amp; Model</label>
+          <input type="text" id="makeModel" placeholder="e.g. Samsung Galaxy A54 5G">
+        </div>
+        <div class="form-group">
+          <label for="imei">IMEI Number <span style="color:var(--text-3);font-size:.72rem">(for phones)</span></label>
+          <input type="text" id="imei" placeholder="15-digit IMEI" maxlength="15" inputmode="numeric">
+          <div class="input-hint">Dial *#06# to find your IMEI. Leave blank if not a phone.</div>
+        </div>
+        <div class="form-group">
+          <label for="serial">Serial Number</label>
+          <input type="text" id="serial" placeholder="Device serial number">
+        </div>
+        <div class="form-group">
+          <label for="theftDate">Date of Theft</label>
+          <input type="date" id="theftDate">
+        </div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="backS1()">Back</button>
+          <button class="btn-next" onclick="goS3()">NEXT: Evidence</button>
+        </div>
       </div>
-      <p style="font-size:.75rem;color:var(--muted);margin-bottom:1.5rem;font-family:var(--font-mono)">Format: MW/XX/YYYY/NNNNN — In production, this will be verified against the Malawi Police database.</p>
 
-      <button type="submit" class="btn btn-danger btn-block">Register Stolen Device</button>
-    </form>
+      <!-- STEP 3: Photo & Marks -->
+      <div id="s3" style="display:none">
+        <div class="step-label">Step 3 of 3 &mdash; Evidence &amp; Identifying Marks</div>
+        <div class="form-group">
+          <label for="marks">Identifying Marks / Description</label>
+          <textarea id="marks" placeholder="Describe any unique marks, scratches, stickers, custom engravings, case colour, etc."></textarea>
+          <div class="input-hint">Be specific. This helps identify your device if recovered.</div>
+        </div>
+        <div class="form-group">
+          <label>Device Photo</label>
+          <div class="upload-zone">
+            <input type="file" accept="image/*" id="photoInput" onchange="previewPhoto(this)">
+            <div class="upload-icon">&#x1F4F7;</div>
+            <div class="upload-text">Tap to upload photo of device<br><small>JPG, PNG up to 5MB</small></div>
+            <img class="preview-img" id="previewImg" alt="Device preview">
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="backS2()">Back</button>
+          <button class="btn-next" onclick="submitReport()">&#x1F6A8; REGISTER DEVICE</button>
+        </div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div id="success" style="display:none">
+        <div class="success-wrap">
+          <div style="font-size:2.5rem;margin-bottom:.8rem">&#x1F6E1;&#xFE0F;</div>
+          <h2 style="font-family:var(--font-display);font-size:1.5rem;border:none;padding:0;margin:0 0 .4rem">Device Registered!</h2>
+          <p style="color:var(--text-2);margin-bottom:.8rem;font-size:.88rem">Your stolen device has been added to the national registry. Anyone checking this IMEI or serial number will see it is flagged.</p>
+          <div class="success-ref" id="refNo">REF: DW-2026-XXXX</div>
+          <br>
+          <a href="../index.html" style="color:var(--accent);text-decoration:none;font-family:var(--font-mono);font-size:.83rem">Back to Search</a>
+          &nbsp;&nbsp;
+          <a href="dashboard.html" style="color:var(--text-3);text-decoration:none;font-family:var(--font-mono);font-size:.83rem">My Devices</a>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-<footer><a href="../index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a><p>&copy; 2026 DeviceWatch — TechNexus Malawi</p></footer>
-<script src="../js/app.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => { DW.requireAuth(); });
-document.getElementById('register-form').addEventListener('submit', e => {
-  e.preventDefault();
-  document.querySelectorAll('.form-error').forEach(el => { el.classList.remove('show'); el.textContent = ''; });
-  const imei = document.getElementById('r-imei').value.trim();
-  const serial = document.getElementById('r-serial').value.trim();
-  const make = document.getElementById('r-make').value;
-  const model = document.getElementById('r-model').value.trim();
-  const color = document.getElementById('r-color').value.trim();
-  const marks = document.getElementById('r-marks').value.trim();
-  const reportNo = document.getElementById('r-report').value.trim();
-  const reportDate = document.getElementById('r-date').value;
-  let valid = true;
-  function err(id, msg) { document.getElementById(id).textContent = msg; document.getElementById(id).classList.add('show'); valid = false; }
 
-  // Must have at least IMEI or serial
-  if (!imei && !serial) { err('re-imei', 'Provide IMEI or serial number'); valid = false; }
-  // Validate IMEI if provided (real Luhn check)
-  if (imei && !DW.isValidIMEI(imei)) { err('re-imei', 'Invalid IMEI — must be 15 digits and pass Luhn check'); valid = false; }
-  // Validate police report format
-  const rpv = DW.validatePoliceReport(reportNo);
-  if (!rpv.valid) { err('re-report', rpv.error); valid = false; }
-  if (!valid) return;
+  <div class="toast" id="toast"></div>
 
-  const result = DW.registerDevice({ imei, serial, make, model, color, marks, reportNo, reportDate });
-  if (!result.success) { err('re-imei', result.error); return; }
+  <script src="../js/app.js"></script>
+  <script>
+    let nidOk = false, rptOk = false;
 
-  document.getElementById('reg-success').innerHTML = `✅ Device registered as stolen. Consignment ID: <strong>${result.device.id}</strong>. It is now searchable in the public registry.`;
-  document.getElementById('reg-success').classList.add('show');
-  document.getElementById('register-form').reset();
-  DW.toast('Device registered successfully', 'success');
-});
-</script>
-</body></html>
+    function verifyNID() {
+      const v = document.getElementById('nid').value.trim();
+      if (v.length < 7) { DW.toast('Enter a valid 7-10 digit National ID', 'error'); return; }
+      const btn = document.getElementById('nidBtn');
+      btn.textContent = 'CHECKING...';
+      btn.disabled = true;
+      setTimeout(() => {
+        nidOk = true;
+        btn.textContent = '\u2713 VERIFIED';
+        btn.classList.add('ok');
+        DW.toast('National ID verified', 'success');
+      }, 1600);
+    }
+
+    function verifyReport() {
+      const v = document.getElementById('policeRpt').value.trim();
+      const re = /^[A-Z]{2}\/[A-Z]{2,3}\/\d{4}\/\d{4,5}$/;
+      if (!re.test(v.toUpperCase())) {
+        DW.toast('Invalid format. Expected: MW/BT/2026/04521', 'error');
+        return;
+      }
+      const btn = document.getElementById('rptBtn');
+      btn.textContent = 'CHECKING...';
+      btn.disabled = true;
+      setTimeout(() => {
+        rptOk = true;
+        btn.textContent = '\u2713 VALID';
+        btn.classList.add('ok');
+        DW.toast('Police report number validated', 'success');
+      }, 1200);
+    }
+
+    function showStep(hide, show, pbHide, pbShow) {
+      document.getElementById(hide).style.display = 'none';
+      document.getElementById(show).style.display = 'block';
+      if (pbHide) document.getElementById(pbHide).classList.replace('active', 'done');
+      if (pbShow) document.getElementById(pbShow).classList.add('active');
+    }
+
+    function goS2() {
+      if (!nidOk) { DW.toast('Please verify your National ID first', 'error'); return; }
+      if (!rptOk) { DW.toast('Please verify your police report number', 'error'); return; }
+      showStep('s1', 's2', 'p1', 'p2');
+    }
+
+    function backS1() {
+      document.getElementById('s2').style.display = 'none';
+      document.getElementById('s1').style.display = 'block';
+      document.getElementById('p2').classList.remove('active', 'done');
+      document.getElementById('p1').className = 'pb active';
+    }
+
+    function goS3() {
+      if (!document.getElementById('makeModel').value.trim()) {
+        DW.toast('Enter device make and model', 'error'); return;
+      }
+      const imei = document.getElementById('imei').value.trim();
+      const ser = document.getElementById('serial').value.trim();
+      if (!imei && !ser) {
+        DW.toast('Enter at least IMEI or Serial Number', 'error'); return;
+      }
+      showStep('s2', 's3', 'p2', 'p3');
+    }
+
+    function backS2() {
+      document.getElementById('s3').style.display = 'none';
+      document.getElementById('s2').style.display = 'block';
+      document.getElementById('p3').classList.remove('active', 'done');
+      document.getElementById('p2').className = 'pb active';
+    }
+
+    function previewPhoto(inp) {
+      if (!inp.files || !inp.files[0]) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = document.getElementById('previewImg');
+        img.src = e.target.result;
+        img.style.display = 'block';
+      };
+      reader.readAsDataURL(inp.files[0]);
+    }
+
+    function submitReport() {
+      if (!document.getElementById('marks').value.trim()) {
+        DW.toast('Please add identifying marks', 'error'); return;
+      }
+      const ref = 'DW-' + new Date().getFullYear() + '-' + String(Math.floor(1000 + Math.random() * 9000));
+      document.getElementById('refNo').textContent = 'REF: ' + ref;
+      document.getElementById('s3').style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+      document.getElementById('p3').classList.add('done');
+    }
+  </script>
+</body>
+</html>

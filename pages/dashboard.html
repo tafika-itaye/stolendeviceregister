@@ -1,152 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage your registered stolen device reports on DeviceWatch.">
+  <meta name="page-depth" content="../">
   <title>Dashboard — DeviceWatch</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#0a0c10;--surface:#111318;--border:#1e2230;--accent:#00e5ff;--accent2:#ff3b5c;--accent3:#a8ff78;--text:#e8eaf0;--muted:#6b7280;--card:#13161e}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
-    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-    nav{position:sticky;top:0;z-index:100;background:rgba(10,12,16,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:60px}
-    .logo{font-family:'Space Mono',monospace;font-size:1.1rem;color:var(--accent);display:flex;align-items:center;gap:8px;text-decoration:none}
-    .logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-    .nav-right{display:flex;gap:1rem;align-items:center}
-    .nav-right a{color:var(--muted);font-size:.85rem;text-decoration:none;transition:color .2s}
-    .nav-right a:hover{color:var(--text)}
-    .user-pill{background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:.35rem .9rem;font-family:'Space Mono',monospace;font-size:.75rem;color:var(--accent)}
-
-    .dash{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:2.5rem 1.5rem}
-    .dash-header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem}
-    .dash-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-.02em}
-    .dash-sub{color:var(--muted);font-size:.875rem;margin-top:.2rem}
-    .btn-add{background:var(--accent2);color:#fff;border:none;padding:.7rem 1.4rem;border-radius:6px;font-family:'Space Mono',monospace;font-weight:700;font-size:.8rem;cursor:pointer;text-decoration:none;display:inline-block;letter-spacing:.03em;transition:opacity .2s}
-    .btn-add:hover{opacity:.85}
-
-    .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2.5rem}
-    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.4rem}
-    .stat-n{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;line-height:1;margin-bottom:.3rem}
-    .stat-l{font-size:.78rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
-    .stat-n.red{color:var(--accent2)} .stat-n.green{color:var(--accent3)} .stat-n.blue{color:var(--accent)}
-
-    .devices-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between}
-    .devices-title small{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--muted);font-weight:400}
-
-    .device-list{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden}
-    .device-row{background:var(--card);padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem;transition:background .15s}
-    .device-row:hover{background:#161922}
-    .dev-icon{font-size:1.6rem;flex-shrink:0}
-    .dev-info{flex:1;min-width:0}
-    .dev-name{font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .dev-meta{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--muted);margin-top:.2rem}
-    .dev-status{display:flex;flex-direction:column;align-items:flex-end;gap:.3rem;flex-shrink:0}
-    .badge{font-family:'Space Mono',monospace;font-size:.65rem;padding:.2rem .6rem;border-radius:4px;letter-spacing:.05em;font-weight:700}
-    .badge.stolen{background:rgba(255,59,92,.12);color:var(--accent2);border:1px solid rgba(255,59,92,.2)}
-    .badge.active{background:rgba(168,255,120,.1);color:var(--accent3);border:1px solid rgba(168,255,120,.2)}
-    .badge.pending{background:rgba(0,229,255,.08);color:var(--accent);border:1px solid rgba(0,229,255,.15)}
-    .dev-date{font-size:.73rem;color:var(--muted)}
-    .dev-actions{display:flex;gap:.5rem}
-    .btn-sm{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:.3rem .7rem;border-radius:4px;font-family:'Space Mono',monospace;font-size:.68rem;cursor:pointer;transition:all .2s}
-    .btn-sm:hover{border-color:var(--accent);color:var(--accent)}
-    .btn-sm.del:hover{border-color:var(--accent2);color:var(--accent2)}
-
-    .empty-state{text-align:center;padding:3rem;color:var(--muted)}
-    .empty-icon{font-size:3rem;margin-bottom:1rem}
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-<nav>
-  <a href="../index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
-  <div class="nav-right">
-    <a href="../index.html">Search</a>
-    <a href="register.html">+ Report Stolen</a>
-    <div class="user-pill">demo@user.com</div>
-    <a href="login.html" style="color:var(--accent2)">Sign Out</a>
-  </div>
-</nav>
 
-<div class="dash">
-  <div class="dash-header">
-    <div>
-      <h1 class="dash-title">My Devices</h1>
-      <p class="dash-sub">Manage your registered stolen device reports</p>
+  <nav>
+    <a href="../index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
+    <div class="nav-links">
+      <a href="../index.html">Search</a>
+      <a href="../about.html">About</a>
+      <a href="register.html">+ Report Stolen</a>
+      <span class="user-badge"></span>
+      <a href="#" onclick="DW.logout();return false;" style="color:var(--danger)">Sign Out</a>
     </div>
-    <a href="register.html" class="btn-add">🚨 Report Stolen Device</a>
-  </div>
+    <button class="hamburger" onclick="DW.toggleMenu()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-n red">3</div>
-      <div class="stat-l">Devices Registered</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-n blue">247</div>
-      <div class="stat-l">Times Searched</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-n green">2</div>
-      <div class="stat-l">Active Reports</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-n" style="color:var(--muted)">0</div>
-      <div class="stat-l">Recovered</div>
-    </div>
-  </div>
-
-  <div class="devices-title">
-    Registered Devices
-    <small>3 RECORDS</small>
-  </div>
-
-  <div class="device-list">
-    <div class="device-row">
-      <div class="dev-icon">📱</div>
-      <div class="dev-info">
-        <div class="dev-name">Samsung Galaxy A54 5G</div>
-        <div class="dev-meta">IMEI: 3520 9900 1761 481 · Report: KE/NRB/2024/04521</div>
+  <div class="dash">
+    <div class="dash-header">
+      <div>
+        <h1 class="dash-title">My Devices</h1>
+        <p class="dash-sub">Manage your registered stolen device reports</p>
       </div>
-      <div class="dev-status">
-        <span class="badge stolen">STOLEN</span>
-        <span class="dev-date">Registered 12 Nov 2024</span>
-        <div class="dev-actions">
-          <button class="btn-sm">View</button>
-          <button class="btn-sm del">Remove</button>
+      <a href="register.html" class="btn btn-danger">&#x1F6A8; Report Stolen Device</a>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-n red">3</div>
+        <div class="stat-l">Devices Registered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n blue">247</div>
+        <div class="stat-l">Times Searched</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n green">2</div>
+        <div class="stat-l">Active Reports</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-n" style="color:var(--text-3)">0</div>
+        <div class="stat-l">Recovered</div>
+      </div>
+    </div>
+
+    <div class="devices-title">
+      Registered Devices
+      <small>3 RECORDS</small>
+    </div>
+
+    <div class="device-list">
+      <div class="device-row">
+        <div class="dev-icon">&#x1F4F1;</div>
+        <div class="dev-info">
+          <div class="dev-name">Samsung Galaxy A54 5G</div>
+          <div class="dev-meta">IMEI: 3520 9900 1761 481 &middot; Report: MW/BT/2025/04521</div>
+        </div>
+        <div class="dev-status">
+          <span class="badge stolen">STOLEN</span>
+          <span class="dev-date">Registered 12 Nov 2025</span>
+          <div class="dev-actions">
+            <button class="btn-sm" onclick="DW.toast('Device detail view coming soon','success')">View</button>
+            <button class="btn-sm del" onclick="confirmRemove(this)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="device-row">
+        <div class="dev-icon">&#x1F4BB;</div>
+        <div class="dev-info">
+          <div class="dev-name">HP Pavilion 15 Laptop</div>
+          <div class="dev-meta">Serial: 5CD12345KL &middot; Report: MW/LL/2026/00214</div>
+        </div>
+        <div class="dev-status">
+          <span class="badge stolen">STOLEN</span>
+          <span class="dev-date">Registered 03 Feb 2026</span>
+          <div class="dev-actions">
+            <button class="btn-sm" onclick="DW.toast('Device detail view coming soon','success')">View</button>
+            <button class="btn-sm del" onclick="confirmRemove(this)">Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="device-row">
+        <div class="dev-icon">&#x231A;</div>
+        <div class="dev-info">
+          <div class="dev-name">TECNO Spark 10 Pro</div>
+          <div class="dev-meta">IMEI: 8675 3001 2345 678 &middot; Report: MW/MZ/2026/00112</div>
+        </div>
+        <div class="dev-status">
+          <span class="badge pending">PENDING VERIFY</span>
+          <span class="dev-date">Registered 18 Jan 2026</span>
+          <div class="dev-actions">
+            <button class="btn-sm" onclick="DW.toast('Device detail view coming soon','success')">View</button>
+            <button class="btn-sm del" onclick="confirmRemove(this)">Remove</button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="device-row">
-      <div class="dev-icon">💻</div>
-      <div class="dev-info">
-        <div class="dev-name">HP Pavilion 15 Laptop</div>
-        <div class="dev-meta">Serial: 5CD12345KL · Report: KE/NRB/2025/00214</div>
-      </div>
-      <div class="dev-status">
-        <span class="badge stolen">STOLEN</span>
-        <span class="dev-date">Registered 03 Feb 2025</span>
-        <div class="dev-actions">
-          <button class="btn-sm">View</button>
-          <button class="btn-sm del">Remove</button>
-        </div>
-      </div>
-    </div>
-    <div class="device-row">
-      <div class="dev-icon">⌚</div>
-      <div class="dev-info">
-        <div class="dev-name">Apple Watch SE (2nd Gen)</div>
-        <div class="dev-meta">Serial: XXGJK1234D · Report: KE/KSM/2025/00891</div>
-      </div>
-      <div class="dev-status">
-        <span class="badge pending">PENDING VERIFY</span>
-        <span class="dev-date">Registered 14 Mar 2025</span>
-        <div class="dev-actions">
-          <button class="btn-sm">View</button>
-          <button class="btn-sm del">Remove</button>
-        </div>
-      </div>
-    </div>
   </div>
-</div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    // Redirect to login if not authenticated
+    if (!DW.isLoggedIn()) {
+      window.location.href = 'login.html';
+    }
+
+    function confirmRemove(btn) {
+      if (confirm('Remove this device from the registry? This cannot be undone.')) {
+        const row = btn.closest('.device-row');
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(20px)';
+        row.style.transition = 'opacity .3s, transform .3s';
+        setTimeout(() => {
+          row.remove();
+          DW.toast('Device removed from registry', 'success');
+        }, 300);
+      }
+    }
+  </script>
 </body>
 </html>
