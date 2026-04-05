@@ -1,143 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>DeviceWatch — Stolen Device Registry</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DeviceWatch is Malawi's free national stolen device registry. Check any IMEI or serial number instantly. Register stolen devices with verified police reports.">
+  <meta name="page-depth" content="">
+  <title>DeviceWatch — Malawi Stolen Device Registry</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<nav>
-  <a href="index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
-  <div class="nav-links">
-    <a href="index.html" class="active">Search</a>
-    <a href="about.html">About</a>
-    <a href="feasibility.html">Feasibility</a>
-    <span class="nav-guest"><a href="pages/login.html">Sign In</a><a href="pages/signup.html" class="btn-nav">Register Free →</a></span>
-    <span class="nav-auth"><a href="pages/register.html">Report Stolen</a><a href="dashboard.html">Dashboard</a><span class="user-badge"></span><a href="#" onclick="DW.logout();return false;" style="color:var(--accent2)">Logout</a></span>
-  </div>
-  <button class="hamburger" onclick="DW.toggleMenu()"><span></span><span></span><span></span></button>
-</nav>
 
-<section class="hero">
-  <div class="hero-badge"><span class="badge-dot"></span> Live Registry · Updated in Real-Time</div>
-  <h1>Was this device <span class="red">stolen</span>?<br><span class="highlight">Find out instantly.</span></h1>
-  <p class="hero-sub">Enter an IMEI number or serial number to check against the national stolen device registry. Free to check, free to register.</p>
-  <div class="search-wrap">
-    <div class="search-box">
-      <input class="search-input" id="searchInput" type="text" placeholder="IMEI / Serial Number (e.g. 352099001761481)" maxlength="20" autocomplete="off"/>
-      <button class="search-btn" id="searchBtn">CHECK DEVICE</button>
+  <nav>
+    <a href="index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Search</a>
+      <a href="about.html">About</a>
+      <a href="feasibility.html">Feasibility</a>
+      <span class="nav-guest">
+        <a href="pages/login.html">Sign In</a>
+        <a href="pages/signup.html" class="btn-nav">Register Free</a>
+      </span>
+      <span class="nav-auth">
+        <a href="pages/register.html">Report Stolen</a>
+        <a href="pages/dashboard.html">Dashboard</a>
+        <span class="user-badge"></span>
+        <a href="#" onclick="DW.logout();return false;" style="color:var(--danger)">Logout</a>
+      </span>
     </div>
-    <p class="search-hint">Enter a 15-digit IMEI or alphanumeric serial number</p>
-  </div>
-  <div id="result-area"></div>
-</section>
+    <button class="hamburger" onclick="DW.toggleMenu()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-<div class="stats-bar">
-  <div class="stat"><div class="stat-num" id="s-devices">0</div><div class="stat-label">Devices Registered</div></div>
-  <div class="stat"><div class="stat-num" id="s-checks">0</div><div class="stat-label">IMEI Checks Run</div></div>
-  <div class="stat"><div class="stat-num" id="s-stolen">0</div><div class="stat-label">Stolen Flagged</div></div>
-  <div class="stat"><div class="stat-num" id="s-users">0</div><div class="stat-label">Registered Users</div></div>
-</div>
-
-<div class="section">
-  <div class="section-tag">// How It Works</div>
-  <h2 class="section-title">Simple. Secure. Effective.</h2>
-  <p class="section-sub">DeviceWatch connects buyers, sellers, and law enforcement through a verified national database of stolen devices.</p>
-  <div class="steps-grid">
-    <div class="step"><div class="step-num">01 —</div><span class="step-icon">🪪</span><h3>Verify Your Identity</h3><p>Register with your National ID. We verify your identity to ensure accountability and prevent fraudulent reports.</p></div>
-    <div class="step"><div class="step-num">02 —</div><span class="step-icon">📋</span><h3>File a Police Report</h3><p>You need a valid police report number. Our system validates the report format before any device can be registered.</p></div>
-    <div class="step"><div class="step-num">03 —</div><span class="step-icon">📱</span><h3>Register the Device</h3><p>Enter the IMEI or serial number, add identifying marks, and upload a photo. Your device is now in the national registry.</p></div>
-    <div class="step"><div class="step-num">04 —</div><span class="step-icon">🔍</span><h3>Buyers Can Check</h3><p>Anyone can check a device before buying. If it's flagged, they see the report status. Your personal details are protected.</p></div>
-  </div>
-</div>
-
-<div class="section" style="padding-top:0">
-  <div class="section-tag">// Features</div>
-  <h2 class="section-title">Everything you need.</h2>
-  <p class="section-sub">Built for individuals, law enforcement, and second-hand device markets.</p>
-  <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon">🛡️</div><h3>National ID Verification</h3><p>Every registrant is verified against the national registry API — no fake reports, no fraud.</p></div>
-    <div class="feature-card"><div class="feature-icon">📸</div><h3>Photo Evidence</h3><p>Upload a photo of your device. Stored securely and shown on positive hits to help identify recovered devices.</p></div>
-    <div class="feature-card"><div class="feature-icon">⚡</div><h3>Instant IMEI Lookup</h3><p>Search results in under 200ms. No account needed to check. Share a link directly to any device's status page.</p></div>
-    <div class="feature-card"><div class="feature-icon">🔒</div><h3>Privacy Protected</h3><p>Owner personal details are never shown publicly. Only device status, report number, and identifying marks are surfaced.</p></div>
-    <div class="feature-card"><div class="feature-icon">📲</div><h3>Mobile First</h3><p>Fully responsive. Check a device at a street market right from your phone in seconds.</p></div>
-    <div class="feature-card"><div class="feature-icon">🌐</div><h3>Free Forever</h3><p>Checking and registering is free. Sustainable through law enforcement partnerships and optional premium API access.</p></div>
-  </div>
-</div>
-
-<div class="cta-section">
-  <h2>Protect your device today.</h2>
-  <p>Registration takes under 3 minutes. Once registered, your device is protected nationally.</p>
-  <a href="pages/signup.html" class="btn btn-danger">Register Free →</a>
-  <a href="pages/register.html" class="btn btn-outline">Register a Stolen Device</a>
-</div>
-
-<footer>
-  <a href="index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
-  <p>&copy; 2026 DeviceWatch — TechNexus Malawi</p>
-  <div class="footer-links"><a href="about.html">About</a><a href="feasibility.html">Feasibility</a><a href="#">Privacy</a><a href="#">API</a></div>
-</footer>
-
-<script src="js/app.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Real search against localStorage registry
-  const searchBtn = document.getElementById('searchBtn');
-  const searchInput = document.getElementById('searchInput');
-  const resultArea = document.getElementById('result-area');
-
-  function doSearch() {
-    const raw = searchInput.value.trim();
-    if (!raw) { resultArea.innerHTML = ''; return; }
-    DW.incrementChecks();
-    const validation = DW.validateIdentifier(raw);
-    const device = DW.lookupDevice(raw);
-
-    if (!device) {
-      resultArea.innerHTML = `<div class="result-card result-clean">
-        <div class="result-title clean">✅ NOT FOUND IN REGISTRY</div>
-        <div class="result-body">The identifier <strong>${validation.value}</strong> does not appear in the stolen device registry. This device has not been reported stolen.<br><br>Always verify ownership documents with the seller.</div>
-        <div class="result-tags"><span class="tag info">${validation.type.toUpperCase()}: ${validation.value}</span><span class="tag green">STATUS: CLEAN</span></div>
-      </div>`;
-      return;
-    }
-
-    if (device.status === 'recovered') {
-      resultArea.innerHTML = `<div class="result-card result-clean">
-        <div class="result-title clean">✅ DEVICE RECOVERED</div>
-        <div class="result-body"><strong>${device.make} ${device.model}</strong> was previously reported stolen but has been marked as <strong>recovered</strong>.<br>Police Report: <strong>${device.reportNo}</strong></div>
-        <div class="result-tags"><span class="tag green">RECOVERED</span><span class="tag info">IMEI: ${device.imei || device.serial}</span></div>
-      </div>`;
-      return;
-    }
-
-    resultArea.innerHTML = `<div class="result-card result-stolen">
-      <div class="result-title stolen">🚨 STOLEN DEVICE FLAGGED</div>
-      <div class="result-body">
-        <strong>${device.make} ${device.model}</strong> (${device.color}) was reported stolen on <strong>${DW.formatDate(device.reportDate)}</strong>.<br>
-        Police Report: <strong>${device.reportNo}</strong><br>
-        Identifying Marks: ${device.marks || 'None specified'}
+  <section class="hero">
+    <div class="hero-badge"><span class="badge-dot"></span> Live Registry &middot; Updated in Real-Time</div>
+    <h1>Was this device <span class="red">stolen</span>?<br><span class="highlight">Find out instantly.</span></h1>
+    <p class="hero-sub">Enter an IMEI number or serial number to check against the national stolen device registry. Free to check. Free to register.</p>
+    <div class="search-wrap">
+      <div class="search-box">
+        <input class="search-input" id="searchInput" type="text"
+               placeholder="IMEI / Serial Number (e.g. 352099001761481)"
+               maxlength="20" autocomplete="off" inputmode="numeric">
+        <button class="search-btn" onclick="DW.checkDevice()">CHECK</button>
       </div>
-      <div class="result-tags">
-        <span class="tag">STOLEN</span>
-        <span class="tag info">IMEI: ${device.imei || device.serial}</span>
-        <span class="tag info">REPORT VERIFIED</span>
+      <p class="search-hint">Enter a 15-digit IMEI or alphanumeric serial number</p>
+    </div>
+    <div id="result-area"></div>
+  </section>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num" id="c1">0</div>
+      <div class="stat-label">Devices Registered</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="c2">0</div>
+      <div class="stat-label">IMEI Checks Today</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="c3">0</div>
+      <div class="stat-label">Stolen Flagged</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="c4">0</div>
+      <div class="stat-label">Registered Users</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-tag">// How It Works</div>
+    <h2 class="section-title">Simple. Secure. Effective.</h2>
+    <p class="section-sub">DeviceWatch connects buyers, sellers, and law enforcement through a verified national database of stolen devices.</p>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">01 &mdash;</div>
+        <span class="step-icon">&#x1F4CB;</span>
+        <h3>Verify Your Identity</h3>
+        <p>Register with your National ID. We verify your identity against the national population registry to ensure accountability.</p>
       </div>
-    </div>`;
-  }
+      <div class="step">
+        <div class="step-num">02 &mdash;</div>
+        <span class="step-icon">&#x1F6A8;</span>
+        <h3>File a Police Report</h3>
+        <p>You need a valid police report number. Our system validates the report format and reference before any device can be registered.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03 &mdash;</div>
+        <span class="step-icon">&#x1F4F1;</span>
+        <h3>Register the Device</h3>
+        <p>Enter the IMEI or serial number, add identifying marks, and upload a photo. Your device is now in the national registry.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04 &mdash;</div>
+        <span class="step-icon">&#x1F50D;</span>
+        <h3>Buyers Can Check</h3>
+        <p>Anyone can check a device before buying. If flagged, they see the report status. Your personal details are always protected.</p>
+      </div>
+    </div>
+  </div>
 
-  searchBtn.addEventListener('click', doSearch);
-  searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+  <div class="section" style="padding-top:0">
+    <div class="section-tag">// Features</div>
+    <h2 class="section-title">Everything you need.</h2>
+    <p class="section-sub">Built for individuals, law enforcement, and second-hand device markets across Malawi.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F6E1;&#xFE0F;</div>
+        <h3>National ID Verification</h3>
+        <p>Every registrant is verified against the national registry API. No fake reports, no fraud.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F4F7;</div>
+        <h3>Photo Evidence</h3>
+        <p>Upload a photo of your device. Stored securely and shown on positive hits to help identify recovered devices.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x26A1;</div>
+        <h3>Instant IMEI Lookup</h3>
+        <p>Results in under 200ms. No account needed to check. Share a link directly to any device status page.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F512;</div>
+        <h3>Privacy Protected</h3>
+        <p>Owner personal details are never shown publicly. Only device status, report number, and identifying marks are visible.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F4F2;</div>
+        <h3>Mobile First</h3>
+        <p>Fully responsive. Check a device at a street market from your phone in seconds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F310;</div>
+        <h3>Free Forever</h3>
+        <p>Checking and registering is free. Sustained through law enforcement partnerships and premium API access.</p>
+      </div>
+    </div>
+  </div>
 
-  // Animated counters from real data
-  const stats = DW.getStats();
-  DW.animCount(document.getElementById('s-devices'), stats.totalDevices);
-  DW.animCount(document.getElementById('s-checks'), stats.checks + 3241); // base + actual
-  DW.animCount(document.getElementById('s-stolen'), stats.stolen);
-  DW.animCount(document.getElementById('s-users'), stats.users + 8904); // base + actual
-});
-</script>
+  <div class="cta-section">
+    <h2>Protect your device today.</h2>
+    <p>Registration takes under 3 minutes. Once registered, your device is protected nationally.</p>
+    <a href="pages/signup.html" class="btn btn-danger">Register Free</a>
+    <a href="pages/register.html" class="btn btn-outline">Register a Stolen Device</a>
+  </div>
+
+  <footer>
+    <a href="index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
+    <p>&copy; 2026 DeviceWatch &mdash; TechNexus Malawi</p>
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="feasibility.html">Feasibility</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      DW.animCount('c1', 14872);
+      DW.animCount('c2', 3241);
+      DW.animCount('c3', 1056);
+      DW.animCount('c4', 8904);
+    });
+  </script>
 </body>
 </html>

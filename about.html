@@ -1,48 +1,98 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>About — DeviceWatch</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-</head><body>
-<nav>
-  <a href="index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
-  <div class="nav-links"><a href="index.html">Search</a><a href="about.html" class="active">About</a><a href="feasibility.html">Feasibility</a>
-    <span class="nav-guest"><a href="pages/login.html">Sign In</a><a href="pages/signup.html" class="btn-nav">Register Free →</a></span>
-    <span class="nav-auth"><a href="pages/register.html">Report Stolen</a><a href="dashboard.html">Dashboard</a><span class="user-badge"></span><a href="#" onclick="DW.logout();return false;" style="color:var(--accent2)">Logout</a></span>
-  </div>
-  <button class="hamburger" onclick="DW.toggleMenu()"><span></span><span></span><span></span></button>
-</nav>
-<div class="wrap">
-  <div class="page-tag">// About DeviceWatch</div>
-  <h1 class="page-title">The national <span>stolen device</span> registry</h1>
-  <p class="page-sub">DeviceWatch is a free, open platform that allows anyone in Malawi to check whether a device has been reported stolen before purchasing it — and allows theft victims to register their stolen devices for national visibility.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About DeviceWatch - Malawi's free national stolen device registry connecting victims, buyers, and law enforcement.">
+  <meta name="page-depth" content="">
+  <title>About — DeviceWatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-  <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:800;margin:3rem 0 1rem;border-top:1px solid var(--border);padding-top:2rem">Why this exists</h2>
-  <p style="color:var(--muted);line-height:1.8;margin-bottom:1rem">Device theft is a growing problem across Malawi and Southern Africa. Stolen phones, laptops, and tablets enter the second-hand market within hours, and buyers have no way to verify whether a device is clean or stolen. DeviceWatch closes that gap.</p>
-  <p style="color:var(--muted);line-height:1.8;margin-bottom:2rem">By creating a publicly searchable registry backed by verified police reports and National ID authentication, we make it risky to sell stolen devices and easy for buyers to protect themselves.</p>
+  <nav>
+    <a href="index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
+    <div class="nav-links">
+      <a href="index.html">Search</a>
+      <a href="about.html" class="active">About</a>
+      <a href="feasibility.html">Feasibility</a>
+      <span class="nav-guest">
+        <a href="pages/login.html">Sign In</a>
+        <a href="pages/signup.html" class="btn-nav">Register Free</a>
+      </span>
+      <span class="nav-auth">
+        <a href="pages/register.html">Report Stolen</a>
+        <a href="pages/dashboard.html">Dashboard</a>
+        <span class="user-badge"></span>
+        <a href="#" onclick="DW.logout();return false;" style="color:var(--danger)">Logout</a>
+      </span>
+    </div>
+    <button class="hamburger" onclick="DW.toggleMenu()" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-  <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:800;margin:2rem 0 1rem;border-top:1px solid var(--border);padding-top:2rem">How verification works</h2>
-  <div class="steps-grid" style="margin-bottom:3rem">
-    <div class="step"><div class="step-num">IDENTITY</div><span class="step-icon">🪪</span><h3>National ID Check</h3><p>Every registrant must provide a valid National ID number. In production, this is verified against the national population registry API to prevent fraudulent reports.</p></div>
-    <div class="step"><div class="step-num">POLICE</div><span class="step-icon">📋</span><h3>Police Report Validation</h3><p>A valid police report number in the format MW/XX/YYYY/NNNNN is required. In production, this is cross-referenced with the Malawi Police Service database.</p></div>
-    <div class="step"><div class="step-num">DEVICE</div><span class="step-icon">📱</span><h3>IMEI Verification</h3><p>IMEI numbers are validated using the Luhn algorithm (real, implemented). This ensures only legitimate IMEI numbers enter the registry.</p></div>
-    <div class="step"><div class="step-num">PRIVACY</div><span class="step-icon">🔒</span><h3>Owner Protection</h3><p>Personal details of the device owner are never shown in search results. Only device description, report number, and identifying marks are public.</p></div>
+  <div class="wrap">
+    <div class="page-tag">// About DeviceWatch</div>
+    <h1 class="page-title">Protecting devices.<br><span>Nationally.</span></h1>
+    <p class="page-sub">DeviceWatch is a free national stolen device registry that connects victims, buyers, and law enforcement through a single verified database &mdash; making the second-hand device market safer for everyone in Malawi.</p>
+
+    <h2>The Problem</h2>
+    <p>Device theft is rampant. Stolen smartphones and laptops are resold within hours through informal markets and online listings. Buyers have no way to verify if a device is legitimately owned. Victims have no central place to register their stolen device.</p>
+    <p>Police reports get filed, devices get stolen, and stolen goods circulate openly because there is no connected, searchable registry that buyers at the point of sale can access instantly.</p>
+
+    <h2>The Solution</h2>
+    <p>DeviceWatch is a verified registry. When your device is stolen, you register it with your verified National ID and police report number. The device IMEI or serial number is indexed in the national registry.</p>
+    <p>Any buyer &mdash; at a market stall, online, or anywhere &mdash; can type the IMEI into DeviceWatch and immediately know: <strong>is this device stolen?</strong></p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="q-grid">
+      <div class="q-item">
+        <div class="q-q">Is it free to use?</div>
+        <div class="q-a">Yes. Checking a device is always free. Registering a stolen device is free. We sustain the platform through API partnerships with insurers and law enforcement.</div>
+      </div>
+      <div class="q-item">
+        <div class="q-q">What is shown if a device is found stolen?</div>
+        <div class="q-a">The device make and model, IMEI, police report number, theft date, and identifying marks. Your personal details (name, National ID) are never shown publicly.</div>
+      </div>
+      <div class="q-item">
+        <div class="q-q">Why do you need my National ID?</div>
+        <div class="q-a">To prevent false reports and abuse. We verify your identity against the national registry, but we never display your ID publicly. It is stored encrypted.</div>
+      </div>
+      <div class="q-item">
+        <div class="q-q">What if I recover my device?</div>
+        <div class="q-a">Log in to your account and update the status to Recovered. This removes the stolen flag from search results immediately.</div>
+      </div>
+      <div class="q-item">
+        <div class="q-q">Can police access the database?</div>
+        <div class="q-a">Law enforcement partners can request access through a formal API agreement, allowing them to cross-reference recovered devices against reports.</div>
+      </div>
+      <div class="q-item">
+        <div class="q-q">Is this only for Malawi?</div>
+        <div class="q-a">The prototype is built with a Malawian context. The system is designed to be country-agnostic. National ID API integration varies by country.</div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a href="pages/signup.html" class="btn btn-danger">Register Free</a>
+      <a href="pages/register.html" class="btn btn-outline">Report a Stolen Device</a>
+      <a href="feasibility.html" class="btn btn-outline">Feasibility Study</a>
+    </div>
   </div>
 
-  <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:800;margin:2rem 0 1rem;border-top:1px solid var(--border);padding-top:2rem">Frequently Asked Questions</h2>
-  <div class="steps-grid">
-    <div class="step"><h3>Is it free?</h3><p>Yes. Checking and registering devices is free. The platform is sustained through law enforcement partnerships, government grants, and optional premium API access for businesses.</p></div>
-    <div class="step"><h3>Do I need an account to check?</h3><p>No. Anyone can search the registry without creating an account. You only need an account to register a stolen device.</p></div>
-    <div class="step"><h3>What if I find my device?</h3><p>Log in to your dashboard and mark the device as "recovered". The public status updates immediately and the device is no longer flagged as stolen.</p></div>
-    <div class="step"><h3>Can sellers use this?</h3><p>Yes. Second-hand device sellers can check every device before purchasing from suppliers. This protects their business and customers from unknowingly buying stolen goods.</p></div>
-  </div>
+  <footer>
+    <a href="index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a>
+    <p>&copy; 2026 DeviceWatch &mdash; TechNexus Malawi</p>
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="feasibility.html">Feasibility</a>
+      <a href="#">Privacy</a>
+    </div>
+  </footer>
 
-  <div style="margin-top:3rem;text-align:center">
-    <a href="pages/signup.html" class="btn btn-danger">Register Free →</a>
-    <a href="index.html" class="btn btn-outline">Search a Device</a>
-  </div>
-</div>
-<footer><a href="index.html" class="logo"><div class="logo-dot"></div>DeviceWatch</a><p>&copy; 2026 DeviceWatch — TechNexus Malawi</p><div class="footer-links"><a href="about.html">About</a><a href="feasibility.html">Feasibility</a></div></footer>
-<script src="js/app.js"></script>
-</body></html>
+  <script src="js/app.js"></script>
+</body>
+</html>
